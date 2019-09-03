@@ -6,6 +6,8 @@ I am only using this to __save 3 seconds everyday__ to create a file with a date
 
 USAGE:
 
-    python main.py
+    python porganizer.py
     
 It will create a file with the current date's prefix and a defaukt suffix; To customize the suffix, enter a suffix name as an input.
+
+It can also be added to the environment variables to be used directly from the commandline.
