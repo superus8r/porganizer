@@ -5,6 +5,7 @@ import datetime
 
 today = datetime.date.today()
 parsedDate = today.strftime('%d.%m.%Y')
+extension = ".md"
 
 message = "Please enter the file suffix: "
 defaultFileName = "DailyLog"
@@ -16,7 +17,7 @@ if sys.version_info[0] < 3:
 else:
     fileSuffix = input(message) or defaultFileName
 
-fileName = parsedDate + '_' + fileSuffix
+fileName = parsedDate + '_' + fileSuffix + extension
 
 print("Creating File: " + fileName)
 file = open(fileName, "w+")
