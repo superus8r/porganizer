@@ -4,10 +4,13 @@
 import sys
 import os
 import datetime
+import re
 
 extension = '.md'
 defaultSuffix = 'DailyLog'
 dateFormat = '%d.%m.%Y'
+dateFormatRegex = '^..\\...\\.....'
+separator = '_'
 # Edit the following to tell how the left ToDo
 # start in the previous file to copy the lines after it.
 todoId = '--------'
@@ -16,30 +19,42 @@ todoId = '--------'
 extraFreeSpace = '\n\n\n\n'
 
 # keep track of last created log file if exists in the folder
-# iterate all the files in the folder and choose the first file
-# that contains the default suffix ('DailyLog' as default)
-# This way we make sure the file is a log, and not 
-# another manually-created file.
+# iterate the files in current folder and use the defined 
+# date regex and file suffix to extract the dates only from 
+# the log files.
+# compare the dates to find the newest file
 
 lastFileInFolder = ''
 lst = os.listdir()
-for fileName in lst:
-    if defaultSuffix in fileName:
-        lastFileInFolder = fileName
-        break
+if (len(lst) > 0):
+    tempDate = ''
+    tempFileName = ''
+    for fileName in lst:
+        str = re.findall('(' + dateFormatRegex + ')' + separator + defaultSuffix, fileName)
+        if len(str) < 1: continue
+        fileDate = datetime.datetime.strptime(str[0], dateFormat)
+        # if tempDate is empty, store this fileDate in it for comparision
+        if not tempDate:
+            tempDate = fileDate
+            tempFileName = fileName
+            continue
+        # if the fileDate is newer than tempDate, 
+        # replace tempDate with it
+        if tempDate < fileDate:
+            tempDate = fileDate
+            tempFileName = fileName
+    lastFileInFolder = tempFileName
+    print(lastFileInFolder)
 
 
 # Create a new todo file for today if does not exist.
 
 today = datetime.date.today()
 parsedDate = today.strftime(dateFormat)
-fileName = parsedDate + '_' + defaultSuffix + extension
+fileName = parsedDate + separator + defaultSuffix + extension
 
 message = fileName + ' will be created, continue?'
-if sys.version_info[0] < 3:
-    raw_input(message)
-else:
-    input(message)
+input(message)
     
 # avoid creating the file if exists
 if os.path.isfile(fileName):
