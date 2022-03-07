@@ -44,7 +44,6 @@ if (len(lst) > 0):
             tempDate = fileDate
             tempFileName = fileName
     lastFileInFolder = tempFileName
-    print(lastFileInFolder)
 
 
 # Create a new todo file for today if does not exist.
@@ -53,12 +52,12 @@ today = datetime.date.today()
 parsedDate = today.strftime(dateFormat)
 fileName = parsedDate + separator + defaultSuffix + extension
 
-message = fileName + ' will be created, continue?'
+message = 'ℹ️  ' + fileName + ' will be created, continue?'
 input(message)
     
 # avoid creating the file if exists
 if os.path.isfile(fileName):
-    print('ℹ️ ' + fileName + ' already exists')
+    print('ℹ️  ' + fileName + ' already exists')
     print('💥 Abort!')
     sys.exit()
 
@@ -75,7 +74,7 @@ yesterdayFile = None
 try:
     yesterdayFile = open(lastFileInFolder, 'r')
 except IOError:
-    print('ℹ️ Yesterday\'s log file does not exist')
+    print('ℹ️  Yesterday\'s log file does not exist')
     file.close()
     sys.exit()
 
@@ -98,5 +97,7 @@ print('✅ Copied ToDo items from ' + lastFileInFolder)
 # close both files
 yesterdayFile.close()
 file.close()
+
+print('🚀 Have an amazing day!')
 
 
